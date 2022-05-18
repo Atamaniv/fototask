@@ -4,6 +4,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
+import { NativeBaseProvider } from 'native-base';
+
+import { FirebaseAppProvider } from 'reactfire';
+import firebaseApp from './common/firebaseApp';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -13,10 +17,14 @@ export default function App() {
     return null;
   } else {
     return (
-      <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
-      </SafeAreaProvider>
+      <FirebaseAppProvider firebaseApp={ firebaseApp }>  
+      <NativeBaseProvider>
+        <SafeAreaProvider>
+          <Navigation colorScheme={colorScheme} />
+          <StatusBar />
+        </SafeAreaProvider>
+      </NativeBaseProvider>
+      </FirebaseAppProvider>
     );
   }
 }
