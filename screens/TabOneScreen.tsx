@@ -1,48 +1,23 @@
-import { useState, FC } from 'react';
-import { StyleSheet, FlatList, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import useColorScheme from '../hooks/useColorScheme';
+import {db} from '../common/firebaseApp';
+import { onSnapshot, collection, query, orderBy } from 'firebase/firestore/';
 
-import firebaseApp from '../common/firebaseApp';
-import { getDoc, getFirestore, Timestamp } from 'firebase/firestore/';
-//import { ref, onValue, getDatabase} from "firebase/database";
-import { collection, query, where, getDocs, orderBy } from "firebase/firestore"; 
-import { Button } from 'native-base';
-import { doc, onSnapshot } from "firebase/firestore";
+function format(date:Date) {
+  date = new Date(date);
 
-// Init services
-const db = getFirestore(firebaseApp);
+  var day = ('0' + date.getDate()).slice(-2);
+  var month = ('0' + (date.getMonth() + 1)).slice(-2);
+  var year = date.getFullYear();
 
-interface Row {
-  id:string,
-  about:string,
-  date:string,
-  userName:string
+  return day+'-'+ month + '-' + year;
 }
-interface objRow extends Array<Row>{}
-var DATA :objRow= [
-  {
-    id:'1',
-    date:"sdfsd",
-    about:"Нужна фотосессия в фотостудии",
-    userName:"qwewrewerwer"
-  }
-]
-
-const collectionRef = collection(db, 'fototasks');
-const q = query(collectionRef, orderBy('date', 'desc'));
-const unsub = onSnapshot(q, (doc) => {
-    console.log("Current data: ", doc.docs) });
-
-
-// Подписка на документ
-//const unsub = onSnapshot(doc(db, "fototasks/", "1"), (doc) => {
-//    console.log("Current data: ", doc.data());
-//});
 
 const Item = ({ item, onPress, backgroundColor, textColor }:{item:any,onPress:any,backgroundColor:any,textColor:any}) => (
-  <TouchableOpacity onPress={onPress} >    
+  <TouchableOpacity onPress={onPress}>    
     <View style={[ backgroundColor, textColor ]}>
       <Text style={[styles.aboutHead]}> { item.date } </Text>
       <View style={[{flexDirection:'row'},styles.item, backgroundColor, textColor ]}>          
@@ -55,15 +30,33 @@ const Item = ({ item, onPress, backgroundColor, textColor }:{item:any,onPress:an
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [selectedId, setSelectedId] = useState(null);
+  const [DATA, setDATA] = useState([] as any);
   const backGRsel = ((useColorScheme()==="dark")?'#333339':'#ccc')
   const backGR = ((useColorScheme()==="dark")?'#555':'#fff')
+
+  useEffect(() => {
+    const collectionRef = collection(db, 'fototasks');
+    const q = query(collectionRef, orderBy('date', 'desc'));
+   
+    
+    const unsubscribe = onSnapshot(q, querySnapshot => {
+      setDATA(querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        about: doc.data().about,
+        date: format(doc.data().date.toDate().toDateString())+'  '+doc.data().date.toDate().toTimeString().substr(0,5),
+        userName: doc.data().userName
+      })))  
+    })    
+    return () => unsubscribe();
+  }, []); 
 
   const renderItem = ({ item }:any) => {
     const backgroundColor = item.id === selectedId ? backGRsel: backGR;
     const color = item.id === selectedId ? 'black' : 'black' ;
 
     return (
-      <Item
+      <Item   
+        key={item.id.toString()}     
         item={item}
         onPress={() => setSelectedId(item.id)}
         backgroundColor={{ backgroundColor }}
