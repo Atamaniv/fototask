@@ -9,9 +9,8 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-.environment.js
+environment.js
 
 # macOS
 .DS_Store
-.environment.js
- 
+environment.js
