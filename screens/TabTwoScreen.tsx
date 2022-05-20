@@ -1,11 +1,16 @@
 import { StyleSheet } from 'react-native';
-
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import { getAuth } from "firebase/auth";
+import  firebaseApp  from '../common/firebaseApp';
+import { useEffect } from 'react';
 
-export default function TabTwoScreen() {
+
+const auth = getAuth(firebaseApp);
+
+export default function TabTwoScreen() {  
   return (
     <View style={styles.container}>
+      <Text>{auth.currentUser===null?'Not authorised':auth.currentUser.toString()}</Text>
     </View>
   );
 }

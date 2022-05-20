@@ -4,7 +4,15 @@ import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import useColorScheme from '../hooks/useColorScheme';
 import {db} from '../common/firebaseApp';
-import { onSnapshot, collection, query, orderBy } from 'firebase/firestore/';
+import { onSnapshot, collection, query, orderBy, deleteDoc,doc } from 'firebase/firestore/';
+
+const delData = async (key:string) => {
+  try {
+    const ref = await deleteDoc(doc(db, "fototasks", key));
+  } catch (e) {
+    console.error("Error delete document: ", e);
+  }
+}
 
 function format(date:Date) {
   date = new Date(date);
@@ -17,15 +25,28 @@ function format(date:Date) {
 }
 
 const Item = ({ item, onPress, backgroundColor, textColor }:{item:any,onPress:any,backgroundColor:any,textColor:any}) => (
+  <View>
   <TouchableOpacity onPress={onPress}>    
-    <View style={[ backgroundColor, textColor ]}>
-      <Text style={[styles.aboutHead]}> { item.date } </Text>
-      <View style={[{flexDirection:'row'},styles.item, backgroundColor, textColor ]}>          
-          <Text style={[styles.about]}> { item.about } </Text>
+    <View>
+
+      <View style={[{flexDirection:'row'}, , backgroundColor, textColor ]}>
+        <Text style={[styles.aboutHead]}> { item.date } </Text>
+        <TouchableOpacity onPress={()=>alert(item.id)} style={[styles.button]}> 
+          <Text> + </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={()=>delData(item.id)} style={[styles.button]}> 
+          <Text> - </Text>
+        </TouchableOpacity>
       </View>
-    </View>
-    <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+
+      <View style={[styles.item , backgroundColor, textColor ]}>          
+          <Text style={[styles.about]}> { item.about } </Text>
+      </View>      
+
+    </View>   
   </TouchableOpacity>
+  <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+  </View>
 );
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
@@ -89,8 +110,7 @@ const styles = StyleSheet.create({
     fontSize:18
   },
   item:{
-    padding:1,
-    margin:1,
+    flexDirection:'row'
   },
   aboutHead:{
     paddingTop:5,
@@ -107,4 +127,9 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor:'#000'
   },
+  button:{
+    padding:5,
+    backgroundColor:'#ccc',
+    borderRadius:3
+  }
 });

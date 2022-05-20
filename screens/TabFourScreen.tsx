@@ -8,7 +8,7 @@ import { collection, addDoc } from 'firebase/firestore';
 const addData = async (about:string) => {
   try {
     const docRef = await addDoc(collection(db, "fototasks"), {
-      about: about,
+      about: (about.trim()),
       date: new Date,
       userName: "Atamaniv Vlad"
     });
@@ -33,7 +33,7 @@ export default function TabFourScreen() {
   const setData = () =>{ addData(task) }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Що потрібно зробити:</Text>
+      <Text style={styles.title}>Зміст заявки:</Text>
       <UselessTextInput
         multiline
         numberOfLines={4}
