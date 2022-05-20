@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity } from 'react-native';
+ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { Text, View } from '../components/Themed';
 import { TextInput } from 'react-native';
