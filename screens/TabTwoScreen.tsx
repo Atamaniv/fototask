@@ -1,20 +1,15 @@
 import { StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
-import { getAuth } from "firebase/auth";
-import  firebaseApp  from '../common/firebaseApp';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { inject, observer } from 'mobx-react';
 
-
-const auth = getAuth(firebaseApp);
-
-export default function TabTwoScreen() {  
+const TabTwoScreen =  function _ ({store} :any) {
   return (
     <View style={styles.container}>
-      <Text>{auth.currentUser===null?'Not authorised':auth.currentUser.toString()}</Text>
+      <Text>{store.count}</Text>      
     </View>
-  );
+    );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -31,3 +26,5 @@ const styles = StyleSheet.create({
     width: '80%',
   },
 });
+
+export default inject(({store})=>({store}))(observer(TabTwoScreen))

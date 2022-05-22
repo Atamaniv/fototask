@@ -1,52 +1,25 @@
 import { StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { getAuth, signOut, createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth";
-import firebaseApp from '../common/firebaseApp';
-import { useState } from 'react';
 import { TextInput, TouchableOpacity } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { inject, observer } from 'mobx-react';
 
-const auth = getAuth(firebaseApp);
+import React from 'react';
 
-
-export default function TabThreeScreen() {
-  const [user, setUser] = useState(auth.currentUser)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  const setUserSingIn = () => {
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in 
-      setUser(userCredential.user);
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-  }
-
-  const setUserOut = () => {
-    signOut(auth).then(() => {
-      setUser(null)
-    }).catch((error) => {
-      console.log(error)
-    });
-    }
-
-  const setNewUser = () => {    
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });    
-  }
-  return (
-  <KeyboardAwareScrollView>
+const TabThreeScreen = function TabThreeScreen ({store}:any) {   
+  
+ return (
     <View style={styles.container}>
-      <Text>{user===null?'Not authorised':user.email}</Text>
-      <TextInput 
+      <Text>{store.count}</Text>
+      <TouchableOpacity
+        style={styles.saveButton}
+        onPress={()=>store.addCount()}
+        >
+        <Text style={styles.saveButtonText}>Sing in</Text>
+      </TouchableOpacity>
+
+      {/* <Text>{iContext.count}</Text> */}
+      {/* <TextInput 
         value={email}
         onChangeText={setEmail}
         maxLength={100} 
@@ -62,26 +35,33 @@ export default function TabThreeScreen() {
       />
       <TouchableOpacity
         style={styles.saveButton}
-        onPress={setNewUser}
+        onPress={()=>store.setNewUser(email,password)}
         >
         <Text style={styles.saveButtonText}>Create user</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.saveButton}
-        onPress={setUserSingIn}
+        onPress={()=>store.setUserIn(email,password)}
         >
         <Text style={styles.saveButtonText}>Sing in</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.saveButton}
-        onPress={setUserOut}
+        onPress={()=>store.setUserOut()}
         >
         <Text style={styles.saveButtonText}>Sing out</Text>
       </TouchableOpacity>
-    </View>
-    </KeyboardAwareScrollView>
-  );
+
+      <TouchableOpacity
+        style={styles.saveButton}
+        onPress={()=>store.add()}
+        >
+        <Text style={styles.saveButtonText}>add</Text>
+      </TouchableOpacity>       */}
+    </View>  
+ )
 }
+export default inject(({store})=>({store}))(observer(TabThreeScreen))
 
 const styles = StyleSheet.create({
   container: {
