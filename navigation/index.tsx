@@ -15,10 +15,10 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import TabThreeScreen from '../screens/TabThreeScreen';
-import TabFourScreen from '../screens/TabFourScreen';
+import TabScreenATasks from '../screens/TabScreenATasks';
+import TabScreenCMyTasks from '../screens/TabScreenCMyTasks';
+import TabScreenDUser from '../screens/TabScreenDUser';
+import TabScreenBNewTask from '../screens/TabScreenBNewTask';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -38,6 +38,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+
 function RootNavigator() {
   return (
     <Stack.Navigator>
@@ -50,6 +51,7 @@ function RootNavigator() {
   );
 }
 
+
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
@@ -60,8 +62,8 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
   //Colors[colorScheme].tabIconSelected='#f00';
-  
-  return (
+
+    return (
     <BottomTab.Navigator
       initialRouteName="TabOne"
       screenOptions={{
@@ -69,9 +71,12 @@ function BottomTabNavigator() {
       }}>
       <BottomTab.Screen
         name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Завдання',
+        // screenOptions={{headerShown:false}}
+        component={TabScreenATasks}
+        options={
+          ({ navigation }: RootTabScreenProps<'TabOne'>) => ({
+          title: '',
+          headerShown:false,
           tabBarIcon: ({ color }) => <TabBarIcon name="th-list" color={color} />,
           headerRight: () => (
             <Pressable
@@ -90,26 +95,29 @@ function BottomTabNavigator() {
         })}
       />
       <BottomTab.Screen
-        name="TabFour"
-        component={TabFourScreen}
+        name="TabTwo"
+        component={TabScreenBNewTask}
         options={{
-          title: 'Створити',
+          headerShown:false,
+          title: '',
           tabBarIcon: ({ color }) => <TabBarIcon name="calendar-plus-o" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name="TabFree"
+        component={TabScreenCMyTasks}
         options={{
-          title: 'Мої завдання',
+          headerShown:false,
+          title: '',
           tabBarIcon: ({ color }) => <TabBarIcon name="calendar-o" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="TabThree"
-        component={TabThreeScreen}
+        name="TabFour"
+        component={TabScreenDUser}
         options={{
-          title: 'Про мене',
+          headerShown:false,
+          title: '',
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />

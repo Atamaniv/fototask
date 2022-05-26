@@ -6,7 +6,8 @@ import { inject, observer } from 'mobx-react';
 const TabTwoScreen =  function _ ({store} :any) {
   return (
     <View style={styles.container}>
-      <Text>{store.count}</Text>      
+      {/* <Text>{store.count}</Text>  */}
+      <Text style={styles.saveButtonText}>{store.email}</Text>
     </View>
     );
 }
@@ -15,6 +16,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor:'#00b2da'
   },
   title: {
     fontSize: 20,
@@ -24,6 +26,11 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: '80%',
+  },
+  saveButtonText:{
+    alignSelf:'center',
+    margin:10,
+    color:'#fff'    
   },
 });
 

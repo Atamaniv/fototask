@@ -12,23 +12,29 @@ import firebaseApp from './common/firebaseApp';
 import { Provider } from 'mobx-react';
 import myStore from './store/store';
 
+import injectWebCss from './common/injectCSS';
+import {useState} from 'react';
+
+injectWebCss()
+
 export default function App() {
+  const [needAuth,setNeedAuth]=useState('T')
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
   if (!isLoadingComplete) {
     return null;
   } else {
     return (
-    <Provider store={new myStore()}> 
       <FirebaseAppProvider firebaseApp={firebaseApp}>
-            <NativeBaseProvider>
-              <SafeAreaProvider>                 
-                <Navigation colorScheme={colorScheme} />
-                <StatusBar />
-              </SafeAreaProvider>
-            </NativeBaseProvider>
+        <Provider store={new myStore()}>
+          <NativeBaseProvider>
+            <SafeAreaProvider>   
+              <Navigation colorScheme={colorScheme}/>
+              <StatusBar />
+            </SafeAreaProvider>
+          </NativeBaseProvider>
+        </Provider>
       </FirebaseAppProvider>
-      </Provider>
     );
   }
 }
