@@ -37,12 +37,12 @@ const Item = ({ item, onPress, backgroundColor, textColor }: { item: any, onPres
     <View style={[styles.item, backgroundColor, textColor]}>
       <Text style={[styles.about]}> {item.about} </Text>
     </View>
-    <View >
+    <View style={[styles.row, {justifyContent:'flex-end'}]}>
       <TouchableOpacity onPress={() => alert(item.id)} style={[styles.button]}>
-        <Text>Подати заявку</Text>
+        <Text style={styles.buttonText}>join</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => delData(item.id)} style={[styles.button]}>
-        <Text> - </Text>
+        <Text style={styles.buttonText}> - </Text>
       </TouchableOpacity>
     </View>
   </View>
@@ -75,7 +75,6 @@ const TabOneScreen = function _ ({ store }: any, { navigation }: RootTabScreenPr
   const renderItem = ({ item }: any) => {
     const backgroundColor = item.id === selectedId ? backGRsel : backGR;
     const color = item.id === selectedId ? 'black' : 'black';
-
     return (
       <Item
         key={item.id.toString()}
@@ -114,7 +113,7 @@ const styles = StyleSheet.create({
   },
   row:{
     flexDirection: 'row', 
-    alignItems: 'center' 
+    alignItems: 'center'
   },
   shadowBox:{
     alignContent: 'center',
@@ -142,12 +141,10 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 5,
-    backgroundColor: '#ccc',
-    borderRadius: 3
+    backgroundColor: '#013d59',
+    borderRadius: 15,    
   },
-  saveButtonText: {
-    alignSelf: 'center',
-    margin: 10,
-    color:'#fff',    
+  buttonText: {
+    color:'#fff'
   }
 });

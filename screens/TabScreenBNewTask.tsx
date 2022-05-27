@@ -1,40 +1,33 @@
- import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { Text, View } from '../components/Themed';
-import { TextInput } from 'react-native';
-
 import { inject, observer } from 'mobx-react';
+import NewTask from '../components/NewTask';
 
-const UselessTextInput = (props:any) => {
-  return (
-    <TextInput
-      {...props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
-      editable
-      maxLength={100}
-    />
-  );
+const MyShadowBoxView = () => {
+  return <View style={styles.shadowBox}>
+      <Text>xxx</Text>
+    </View>
 }
+
 const TabFourScreen = function _ ({store}:any) {   
-  const [task, setTask] = useState('');
-  const setData = () =>{ store.addData(task) }
-  return (
+    const [newTaskVisible, setNewTaskVisible] = useState(false)
+    return (
     <View style={styles.container}>
-      <View style={styles.shadowBox}>
-        <Text style={styles.title}>Нове завдання:</Text>
-        <UselessTextInput
-          multiline
-          numberOfLines={4}
-          onChangeText={(text:string) => setTask(text)}
-          value={task}
-          style={styles.inputMultiline}
-        />
+      <View style={{ backgroundColor: '#013d59', height: 100, width: '100%', alignItems: 'center' }}>
+        <Text style={{ color: '#fff', fontSize: 40, paddingTop: 25 }}>NEW TASK</Text>
+      </View>
+
+      {  store.showNewTask && <NewTask /> }
+      { !store.showNewTask &&
         <TouchableOpacity
           style={styles.button}
-          onPress={setData}
-          >
-        <Text style={styles.buttonText}>Створити завдання</Text>
+          onPress={()=>store.setShowNewTask()}>
+          <Text style={styles.buttonText}>Створити завдання</Text>
         </TouchableOpacity>
-      </View>
+      }
+
+      <MyShadowBoxView/>
     </View>
   );
 }
@@ -49,7 +42,7 @@ const styles = StyleSheet.create({
   },
   shadowBox:{
     alignContent: 'center',
-    marginTop:50,
+    justifyContent:'center',    
     width:'90%',
     borderWidth: 1,
     margin: 5,
@@ -74,12 +67,12 @@ const styles = StyleSheet.create({
   },
   buttonText:{
     alignSelf:'center',
-    margin:10,
-    color:'#fff'
+    margin:20,
+    color:'#fff',   
   },
   button: {
     borderWidth:1,
     margin:10,
     backgroundColor:'#024c5c'
-  },
+  }
 });

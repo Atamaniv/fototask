@@ -16,10 +16,13 @@ export default class myStore {
   email:string=''
   photoURL:string=''
   emailVerified:string=''
-  uid:string=''
-  count=0;
+  uid:string='' 
+  showNewTask=false
 
-
+  setShowNewTask = () =>{
+    this.showNewTask=!this.showNewTask;
+  }
+  
   constructor() {
     // Don't need decorators now, just this call    
     makeAutoObservable(this);
@@ -27,9 +30,7 @@ export default class myStore {
 
   setUser=(user:any)=>{
     this.user=user;
-    //console.log(this.user);
     if (user !== null) {
-      // The user object has basic properties such as display name, email, etc.
       this.displayName = user.displayName;
       this.email = user.email;
       this.photoURL = user.photoURL;
@@ -41,19 +42,13 @@ export default class myStore {
       this.photoURL = '';
       this.emailVerified = '';
     }
-
   }
   
   getCurrentUser=()=>{
     console.log(auth.currentUser)
   }
 
-  addCount=()=>{
-    this.count = this.count +1;
-    console.log(this.count)    
-  }
-
-  setNewUser(email:string, password:string){
+  async setNewUser(email:string, password:string){
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => { 
           this.setUser(userCredential.user);          
