@@ -1,60 +1,93 @@
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text } from './Themed';
-import { TextInput, Modal, View, TouchableOpacity } from 'react-native';
+import { Modal, View, TouchableOpacity } from 'react-native';
 import R from '../constants/Layout';
+import DatePeackerMicro from './DatePeackerMicro';
 
-const date = new Date();
-const yearN = date.getFullYear();
-const monthN = date.getMonth();
-const dayN = date.getDay();
-const hoursN = date.getHours();
-const minutesN = date.getMinutes();
-const combineN = dayN.toString()+'/'+monthN.toString()+'/'+yearN.toString()+' '+hoursN.toString()+':'+minutesN.toString();
+const DatePeacker = function ({startDate, callBack}:any){
+  
+  // const date = new Date('2022-02-24T13:30:00');
+  const date = new Date(startDate);
+  const yearN = date.getUTCFullYear().toString();
+  const monthN = (date.getUTCMonth()+1).toString().padStart(2,"0");
+  const dayN = date.getUTCDate().toString().padStart(2,"0");
+  const hoursN = date.getHours().toString().padStart(2,"0");
+  const minutesN = date.getUTCMinutes().toString().padStart(2,"0");
+   
+  const combineN = 
+    dayN.toString()+'.'+
+    monthN.toString()+'.'+
+    yearN.toString()+' '+
+    hoursN.toString()+':'+
+    minutesN.toString();
+  
 
-// const toTimestamp = (strDate:string) => {  
-//     const dt = new Date().getTime();  
-//     return dt / 1000;  
-//   }  
-// alert(toTimestamp('02/13/2020 23:31:30'));
-
-export default function DatePeacker () {
-  const [month, setMonth ]= useState(monthN.toString().padStart(2, "0"));
-  const [day, setDay ]= useState(dayN.toString().padStart(2, "0"));
-  const [year, setYear ]= useState(yearN.toString());
-  const [combine, setCombaine]= useState(combineN)
-  const [date, setDate]= useState('');
   const [modal, showModal ]= useState(false);
-  const [validCombine,setValidCombain]= useState(true)
-  const testValidCombain=()=>{ return true }
+  const [year, setYear ]= useState(yearN);
+  const [month, setMonth ]= useState(monthN);
+  const [hours, setHours ]= useState(hoursN);
+  const [minutes, setMinutes ]= useState(minutesN);
+  const [day, setDay ]= useState(dayN);
+  const [daysInMonth, setDaysInMonth] = useState(new Date(Number(year), Number(month), 0).getDate());
+  const [error, setError] = useState(false)
+  //const [daysInMonth, setDaysInMonth] = useState(new Date(Number(year), Number(month), 0).getDate());
+
+  
+  const setDaysOfMonth =(yearIn:string,monthIn:string)=>{
+    setDaysInMonth(new Date(Number(yearIn), Number(monthIn), 0).getDate())    
+  }
+
+  const virifyDay = (year:number, month:number, day:number)=>{
+    if ( day>(new Date(Number(year), Number(month), 0).getDate()) ){
+      setError(true)
+    } else setError(false)
+  }
+
+  const [combine, setCombaine]= useState(combineN)
 
   return(
     <View style={{maxWidth:R.window.height/2}}>
       <Modal
         animationType="none"
         transparent={true}
-        visible={modal}    
-        style={{maxWidth:R.window.height/2}}
+        visible={modal}
       >
-        <TouchableOpacity style={styles.containerModal} onPress={()=>showModal(false)}>
-        <View style={styles.modalView}>
-          <TextInput
-            style={{width:200,fontSize:18, padding:4}}
-            value={combine}
-            onChangeText={testValidCombain}
-            maxLength={2}
-          />
+        {/* Modal window */}
+        <View style={styles.containerModal2}>
+          <View style={styles.modalView2}>
+            <View style={styles.row}>
+              <Text style={styles.pseudoText}>Дата:</Text>             
+              <DatePeackerMicro title={'День'} def={day} callBack={(val:any)=>setDay(val)} days={daysInMonth} error={error}/>
+                <Text style={{margin:10,marginTop:10}}>.</Text>              
+              <DatePeackerMicro title={'Місяць'} def={month} callBack={(val:any)=>{setMonth(val);setDaysOfMonth(year,val); virifyDay(Number(year),val,Number(day))}}/>
+                <Text style={{margin:10,marginTop:10}}>.</Text>             
+              <DatePeackerMicro title={'Рік'} def={year} callBack={(val:any)=>{setYear(val);setDaysOfMonth(val, month)}}/>
+            </View>
+            <View style={styles.row}>
+                <Text style={styles.pseudoText}>Час:</Text>              
+              <DatePeackerMicro title={'Година'} def={hours} callBack={(val:any)=>setHours(val)}/>
+                <Text style={{margin:10}}>:</Text>
+              <DatePeackerMicro title={'Хвилини'} def={minutes} callBack={(val:any)=>setMinutes(val)}/>
+            </View>
+            <TouchableOpacity 
+              style={[error?styles.buttonError:styles.button,{alignSelf:'center'}]} 
+              onPress={()=>{()=>(error?alert('Не можу зберегти таку дату, її не існує'):showModal(false))}}>
+              <Text style={[styles.buttonText,{width:100}]}>ОК</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        </TouchableOpacity>
       </Modal>
       <TouchableOpacity
         style={styles.button}
         onPress={()=>showModal(true)}>
-        <Text style={styles.buttonText}>{combine}</Text>                
+        <Text style={styles.buttonText}>{day+'.'+month+'.'+year+'  '+hours+':'+minutes}</Text>
       </TouchableOpacity> 
       </View>       
     )
   }
+
+  export default DatePeacker
  
 const styles = StyleSheet.create({
   containerModal: {
@@ -66,7 +99,7 @@ const styles = StyleSheet.create({
     flexDirection:'row',    
     alignSelf:'center',
     minWidth:R.window.height/2
-  },
+    },  
   modalView: {
     margin: 20,
     backgroundColor: "white",
@@ -75,22 +108,69 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf:'center',    
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    shadowOpacity: 0.8,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 4 },
     elevation: 5,    
   },
+
+  containerModal2: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height:'100%', 
+    alignContent:'center', 
+    flexDirection:'row',    
+    alignSelf:'center',
+    maxWidth:R.window.height/2,
+    width:'80%'
+  },
+  modalView2: {
+    minWidth:280,
+    width:'60%',
+    backgroundColor:'#fff',
+    borderRadius: 5,
+    borderWidth: 1,
+    padding:10,
+    alignItems: 'flex-start',
+    alignSelf:'center',    
+    shadowColor: "#000",
+    shadowOpacity: 0.8,
+    shadowRadius: 18,
+    shadowOffset: { width: 0, height: 4 },    
+    elevation: 6
+  },
+
   buttonText:{
     alignSelf:'center',
     margin:10,
-    color:'#fff'
+    color:'#fff',    
   },
   button: {
     borderWidth:1,
     margin:10,
-    backgroundColor:'#024c5c'
+    backgroundColor:'#024c5c',
+    textAlign:'center'
+  },  
+  buttonError: {
+    borderWidth:1,
+    margin:10,
+    backgroundColor:'#f00',
+    textAlign:'center'
+  },
+  row: {
+    flexDirection:'row',
+    padding:10
+  },
+  pseudoText: {
+    margin:10,
+    color:'#000',
+    width:50,
+  },
+  pseudoButton: {    
+    padding:10,    
+    borderWidth:1,
+    borderRadius:3,
+    backgroundColor:'#024c5c',
+    color:'#fff'
   }
 })

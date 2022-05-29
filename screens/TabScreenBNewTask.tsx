@@ -4,30 +4,35 @@ import { Text, View } from '../components/Themed';
 import { inject, observer } from 'mobx-react';
 import NewTask from '../components/NewTask';
 
-const MyShadowBoxView = () => {
-  return <View style={styles.shadowBox}>
-      <Text>xxx</Text>
-    </View>
-}
+// const MyShadowBoxView = () => {
+//   return <View style={styles.shadowBox}>
+//       <Text>xxx</Text>
+//     </View>
+// }
 
-const TabFourScreen = function _ ({store}:any) {   
+const TabFourScreen = function ({store}:any) {   
     const [newTaskVisible, setNewTaskVisible] = useState(false)
+    const runTask=()=>{
+      store.isAuthorised() ? alert('Нообхіна авторизація'):store.setShowNewTask();
+    }
     return (
     <View style={styles.container}>
       <View style={{ backgroundColor: '#013d59', height: 100, width: '100%', alignItems: 'center' }}>
         <Text style={{ color: '#fff', fontSize: 40, paddingTop: 25 }}>NEW TASK</Text>
       </View>
-
+      <View style={{height: 50, width: '100%'}}>
+        
+      </View>
       {  store.showNewTask && <NewTask /> }
       { !store.showNewTask &&
         <TouchableOpacity
           style={styles.button}
-          onPress={()=>store.setShowNewTask()}>
+          onPress={()=>runTask()}>
           <Text style={styles.buttonText}>Створити завдання</Text>
         </TouchableOpacity>
       }
 
-      <MyShadowBoxView/>
+      {/* <MyShadowBoxView/> */}
     </View>
   );
 }
@@ -49,9 +54,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     elevation: 24,
-    shadowOpacity: 0.58,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 12 }
+    shadowOpacity: 0.8,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 }
   },
   title: {
     fontSize: 18,
@@ -73,6 +78,7 @@ const styles = StyleSheet.create({
   button: {
     borderWidth:1,
     margin:10,
+    borderRadius:3,
     backgroundColor:'#024c5c'
-  }
+  }  
 });

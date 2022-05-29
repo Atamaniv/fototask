@@ -1,9 +1,6 @@
 import getEnvVars from '../environment';
 const  apiUrl  = getEnvVars();
 
-console.log(  )
-
-
 // eslint-disable-next-line import/no-mutable-exports, @typescript-eslint/ban-types
 const firebaseConfig = {
   apiKey: {apiUrl}.apiUrl?.apiKey,

@@ -19,6 +19,8 @@ const delData = async (key: string) => {
   }
 }
 
+
+
 function format(date: Date) {
   date = new Date(date);
 
@@ -48,7 +50,7 @@ const Item = ({ item, onPress, backgroundColor, textColor }: { item: any, onPres
   </View>
 );
 
-const TabOneScreen = function _ ({ store }: any, { navigation }: RootTabScreenProps<'TabOne'>) {
+const TabOneScreen = function ({ store }: any, { navigation }: RootTabScreenProps<'TabOne'>) {
   useEffect(() => {
     store.setUser(auth.currentUser)
   })
@@ -90,13 +92,13 @@ const TabOneScreen = function _ ({ store }: any, { navigation }: RootTabScreenPr
     <View style={styles.container}>
       <View style={{ backgroundColor: '#013d59', height: 100, width: '100%', alignItems: 'center' }}>
         <Text style={{ color: '#fff', fontSize: 40, paddingTop: 25 }}>PHOTOTASKS</Text>
-      </View>     
+      </View>      
       <FlatList
-        style={{ width: '100%', margin: 5, padding: 5 }}
+        style={{ width: '100%', margin: 5, padding: 5}}
         data={DATA}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-        extraData={selectedId}
+        extraData={selectedId}        
       />
     </View>
   );
@@ -122,9 +124,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     elevation: 24,
-    shadowOpacity: 0.58,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 12 }
+    shadowOpacity: 0.8,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 }
   },
   title: {
     fontSize: 18
@@ -145,6 +147,22 @@ const styles = StyleSheet.create({
     borderRadius: 15,    
   },
   buttonText: {
-    color:'#fff'
-  }
+    color:'#fff',
+    padding:2,
+    shadowOpacity: 0.8,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 }
+  },
+  m1: {
+    backgroundColor:'#013d59',
+    height:100,
+    width: '100%',
+    alignItems: 'center'
+},
+m2:{
+    alignItems:'center',
+    justifyContent:'flex-start',
+    backgroundColor:'#00b2da',
+    height:'100%'
+}
 });

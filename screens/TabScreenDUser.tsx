@@ -4,7 +4,7 @@ import { Image, TextInput, TouchableOpacity } from 'react-native'
 import { inject, observer } from 'mobx-react';
 import React, { useState } from 'react';
 
-const TabThreeScreen = function TabThreeScreen ({store}:any) {   
+const TabThreeScreen = function ({store}:any) {   
   const [autReg,setAuthReg]=useState('Auth')
   const [email, setEmail] = useState(''); 
   const [password, setPassword] = useState(''); 

@@ -1,12 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
-import { useState, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 
-const TabTwoScreen =  function _ ({store} :any) {
+const TabTwoScreen =  function ({store} :any) {
   return (
     <View style={styles.container}>
-      {/* <Text>{store.count}</Text>  */}
       <Text style={styles.saveButtonText}>{store.email}</Text>
     </View>
     );

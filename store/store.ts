@@ -12,13 +12,9 @@ const auth = getAuth(firebaseApp);
 
 export default class myStore {
   user:{}|null=null
-  displayName:string=''
   email:string=''
-  photoURL:string=''
-  emailVerified:string=''
-  uid:string='' 
-  showNewTask=false
-
+  showNewTask=false // !!!  
+  
   setShowNewTask = () =>{
     this.showNewTask=!this.showNewTask;
   }
@@ -26,35 +22,35 @@ export default class myStore {
   constructor() {
     // Don't need decorators now, just this call    
     makeAutoObservable(this);
+    let x=new Date
+    console.log(new Date);
+    x=(new Date('2022-02-24T13:30:00'))
+    console.log(x);
+   }
+  
+  isAuthorised = () =>{
+    if (this.email==='')
+     return true
+    else
+     return false
   }
 
   setUser=(user:any)=>{
     this.user=user;
     if (user !== null) {
-      this.displayName = user.displayName;
       this.email = user.email;
-      this.photoURL = user.photoURL;
-      this.emailVerified = user.emailVerified;      
     } else
     {
-      this.displayName ='';
       this.email = '';
-      this.photoURL = '';
-      this.emailVerified = '';
     }
   }
   
-  getCurrentUser=()=>{
-    console.log(auth.currentUser)
-  }
-
   async setNewUser(email:string, password:string){
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => { 
-          this.setUser(userCredential.user);          
+        this.setUser(userCredential.user);          
         })
       .catch((error) => { 
-        console.log(error.message);  
         this.user = '' });
   }  
   
@@ -63,7 +59,7 @@ export default class myStore {
       .then((userCredential) => { 
         this.setUser(userCredential.user);        
         })
-      .catch((error) => { console.log(error.message); this.user = '' });
+      .catch((e) => { console.error(e.message); this.user = '' });
   }  
 
   async setUserOut(){ 
@@ -71,7 +67,7 @@ export default class myStore {
     .then(() => { 
       this.setUser(null);      
     })
-    .catch((error) => { console.log(error) });  
+    .catch((e) => { console.error(e) });  
   }
 
   async addData(about:string){

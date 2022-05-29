@@ -1,8 +1,8 @@
+import { useState } from 'react';
+import { inject, observer } from 'mobx-react';
 import { View, Text } from './Themed';
 import { TouchableOpacity, TextInput, StyleSheet } from 'react-native'
-import { useState } from 'react';
 import DatePicker from '../components/DatePeacker'
-import { inject, observer } from 'mobx-react';
 
 const UselessTextInput = (props:any) => {
     return (
@@ -14,18 +14,21 @@ const UselessTextInput = (props:any) => {
     );
   }
   
-const NewTask = function _ ({store}:any) {
+const NewTask = function _ ({store}:any) {  
     const [data,setData] = useState('');
+    const [dataCreate,setDataCreate] = useState('');
+    const [dataExecute,setDataExecute] = useState('');
     const createTask = () => {
         store.addData(data);
         store.setShowNewTask();
     }
     return (
     <View style={{backgroundColor:'none', width:'100%', alignSelf:'center'}}>
-      <View style={styles.shadowBox}>
+      <View style={styles.shadowBox}>        
         <Text style={styles.title}>Нове завдання:</Text>
         <Text>Час зустрічі:</Text>
-        <DatePicker/>
+        <DatePicker startDate={'2022-02-24T13:30:00'} callBack={()=>setDataCreate}/>
+        <DatePicker startDate={'1999-02-20T12:30:00'} callBack={()=>setDataExecute}/>
         <Text>Задача:</Text>
         <UselessTextInput
             multiline
@@ -68,11 +71,11 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       margin: 20,      
       borderRadius: 5,
-      padding: 5,
+      padding: 10,
       elevation: 24,
-      shadowOpacity: 0.58,
-      shadowRadius: 16,
-      shadowOffset: { width: 0, height: 12 }
+      shadowOpacity: 0.8,
+      shadowRadius: 8,
+      shadowOffset: { width: 0, height: 4 }
     },
     title: {
       fontSize: 18,
@@ -82,8 +85,8 @@ const styles = StyleSheet.create({
     },
     inputMultiline: {
       padding: 10,     
-      borderWidth:1, 
-
+      borderWidth:1,
+      margin:10
     },
     buttonText:{
       alignSelf:'center',

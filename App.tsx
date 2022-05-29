@@ -30,10 +30,12 @@ import {View} from 'react-native';
 // cookies.set(key2, value2, {secure: true, sameSite: 'none'});
 //yarn start -- --resetCache
 import R from './constants/Layout';
-
 injectWebCss()
 
-export default function App() {
+
+const store = new myStore();
+
+function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
   if (!isLoadingComplete) {
@@ -41,17 +43,18 @@ export default function App() {
   } else {
     return (
       <FirebaseAppProvider firebaseApp={firebaseApp}>
-        <Provider store={new myStore()}>
+        <Provider store={store}>
           <NativeBaseProvider>
-          <View style={{backgroundColor:'#f00', height:'99.89%', alignContent:'center', flexDirection:'row', justifyContent:'center'}}>  
-            <SafeAreaProvider style={{maxWidth:R.window.height/2}}>
-              <Navigation colorScheme={colorScheme} />
-              <StatusBar />
-            </SafeAreaProvider>
-          </View>
+            <View style={{backgroundColor:'#f00', height:'99.89%', alignContent:'center', flexDirection:'row', justifyContent:'center'}}>  
+              <SafeAreaProvider style={{maxWidth:R.window.height/2}}>
+                <Navigation colorScheme={colorScheme} />
+                <StatusBar />
+              </SafeAreaProvider>            
+            </View>
           </NativeBaseProvider>
         </Provider>
       </FirebaseAppProvider>
     );
   }
 }
+export default App;
