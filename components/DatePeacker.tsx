@@ -6,34 +6,16 @@ import R from '../constants/Layout';
 import DatePeackerMicro from './DatePeackerMicro';
 
 const DatePeacker = function ({startDate, callBack}:any){
-  
+  const [modal, showModal ]= useState(false);
   // const date = new Date('2022-02-24T13:30:00');
   const date = new Date(startDate);
-  const yearN = date.getUTCFullYear().toString();
-  const monthN = (date.getUTCMonth()+1).toString().padStart(2,"0");
-  const dayN = date.getUTCDate().toString().padStart(2,"0");
-  const hoursN = date.getHours().toString().padStart(2,"0");
-  const minutesN = date.getUTCMinutes().toString().padStart(2,"0");
-   
-  const combineN = 
-    dayN.toString()+'.'+
-    monthN.toString()+'.'+
-    yearN.toString()+' '+
-    hoursN.toString()+':'+
-    minutesN.toString();
-  
-
-  const [modal, showModal ]= useState(false);
-  const [year, setYear ]= useState(yearN);
-  const [month, setMonth ]= useState(monthN);
-  const [hours, setHours ]= useState(hoursN);
-  const [minutes, setMinutes ]= useState(minutesN);
-  const [day, setDay ]= useState(dayN);
+  const [year, setYear ]= useState(date.getUTCFullYear().toString());
+  const [month, setMonth ]= useState( (date.getUTCMonth()+1).toString().padStart(2,"0"));
+  const [hours, setHours ]= useState(date.getHours().toString().padStart(2,"0"));
+  const [minutes, setMinutes ]= useState(date.getUTCMinutes().toString().padStart(2,"0"));
+  const [day, setDay ]= useState(date.getUTCDate().toString().padStart(2,"0"));
   const [daysInMonth, setDaysInMonth] = useState(new Date(Number(year), Number(month), 0).getDate());
-  const [error, setError] = useState(false)
-  //const [daysInMonth, setDaysInMonth] = useState(new Date(Number(year), Number(month), 0).getDate());
-
-  
+  const [error, setError] = useState(false)  
   const setDaysOfMonth =(yearIn:string,monthIn:string)=>{
     setDaysInMonth(new Date(Number(yearIn), Number(monthIn), 0).getDate())    
   }
@@ -41,10 +23,9 @@ const DatePeacker = function ({startDate, callBack}:any){
   const virifyDay = (year:number, month:number, day:number)=>{
     if ( day>(new Date(Number(year), Number(month), 0).getDate()) ){
       setError(true)
-    } else setError(false)
+    } 
+      else setError(false);
   }
-
-  const [combine, setCombaine]= useState(combineN)
 
   return(
     <View style={{maxWidth:R.window.height/2}}>
@@ -58,21 +39,42 @@ const DatePeacker = function ({startDate, callBack}:any){
           <View style={styles.modalView2}>
             <View style={styles.row}>
               <Text style={styles.pseudoText}>Дата:</Text>             
-              <DatePeackerMicro title={'День'} def={day} callBack={(val:any)=>setDay(val)} days={daysInMonth} error={error}/>
+              <DatePeackerMicro 
+                title={'День'} 
+                def={day} 
+                callBack={(val:any)=>{setDay(val);virifyDay(Number(year),Number(month),Number(val))}} 
+                days={daysInMonth} 
+                error={error}/>
                 <Text style={{margin:10,marginTop:10}}>.</Text>              
-              <DatePeackerMicro title={'Місяць'} def={month} callBack={(val:any)=>{setMonth(val);setDaysOfMonth(year,val); virifyDay(Number(year),val,Number(day))}}/>
+              <DatePeackerMicro 
+                title={'Місяць'} 
+                def={month} 
+                callBack={(val:any)=>{setMonth(val);setDaysOfMonth(year,val); virifyDay(Number(year),val,Number(day))}}/>
                 <Text style={{margin:10,marginTop:10}}>.</Text>             
-              <DatePeackerMicro title={'Рік'} def={year} callBack={(val:any)=>{setYear(val);setDaysOfMonth(val, month)}}/>
+              <DatePeackerMicro 
+                title={'Рік'} 
+                def={year} 
+                callBack={(val:any)=>{setYear(val);setDaysOfMonth(val, month);
+                virifyDay(Number(val),Number(month),Number(day))}}/>
             </View>
             <View style={styles.row}>
                 <Text style={styles.pseudoText}>Час:</Text>              
-              <DatePeackerMicro title={'Година'} def={hours} callBack={(val:any)=>setHours(val)}/>
+              <DatePeackerMicro 
+                title={'Година'} 
+                def={hours} 
+                callBack={(val:any)=>setHours(val)}/>
                 <Text style={{margin:10}}>:</Text>
-              <DatePeackerMicro title={'Хвилини'} def={minutes} callBack={(val:any)=>setMinutes(val)}/>
+              <DatePeackerMicro 
+                title={'Хвилини'} 
+                def={minutes} 
+                callBack={(val:any)=>setMinutes(val)}/>
             </View>
             <TouchableOpacity 
               style={[error?styles.buttonError:styles.button,{alignSelf:'center'}]} 
-              onPress={()=>{()=>(error?alert('Не можу зберегти таку дату, її не існує'):showModal(false))}}>
+              onPress={()=>{ error? 
+                alert('Не можу зберегти таку дату, її не існує'):
+                showModal(false)} 
+              }>
               <Text style={[styles.buttonText,{width:100}]}>ОК</Text>
             </TouchableOpacity>
           </View>
@@ -86,9 +88,7 @@ const DatePeacker = function ({startDate, callBack}:any){
       </View>       
     )
   }
-
-  export default DatePeacker
- 
+export default DatePeacker
 const styles = StyleSheet.create({
   containerModal: {
     alignItems: 'center',
@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     elevation: 5,    
   },
-
   containerModal2: {
     alignItems: 'center',
     justifyContent: 'center',

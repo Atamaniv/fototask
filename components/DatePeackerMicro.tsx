@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
   },
   modalView2: {
     width:'60%',
+    minWidth:230,
     alignContent:'center',
     backgroundColor:'#fff',
     borderRadius: 5,

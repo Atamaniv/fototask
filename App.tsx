@@ -28,7 +28,7 @@ import {View} from 'react-native';
 // const cookies = new Cookies();
 // cookies.set(key1, value1, {secure: true, sameSite: 'none'});
 // cookies.set(key2, value2, {secure: true, sameSite: 'none'});
-//yarn start -- --resetCache
+//yarn start resetCache
 import R from './constants/Layout';
 injectWebCss()
 
@@ -46,7 +46,7 @@ function App() {
         <Provider store={store}>
           <NativeBaseProvider>
             <View style={{backgroundColor:'#f00', height:'99.89%', alignContent:'center', flexDirection:'row', justifyContent:'center'}}>  
-              <SafeAreaProvider style={{maxWidth:R.window.height/2}}>
+              <SafeAreaProvider style={{maxWidth:R.window.width<500?'100%':R.window.height/2, minWidth:400}}>
                 <Navigation colorScheme={colorScheme} />
                 <StatusBar />
               </SafeAreaProvider>            

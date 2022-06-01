@@ -14,21 +14,20 @@ const UselessTextInput = (props:any) => {
     );
   }
   
-const NewTask = function _ ({store}:any) {  
-    const [data,setData] = useState('');
-    const [dataCreate,setDataCreate] = useState('');
-    const [dataExecute,setDataExecute] = useState('');
+const NewTask = function ({store}:any) {  
+    const [data,setData] = useState('');    
+    const [budget,setBudget] = useState('');    
+    const [dataExecute,setDataExecute] = useState(new Date());
     const createTask = () => {
-        store.addData(data);
+        store.addData(data, budget, dataExecute);
         store.setShowNewTask();
     }
     return (
-    <View style={{backgroundColor:'none', width:'100%', alignSelf:'center'}}>
+    <View style={{backgroundColor:'none', width:'100%', alignSelf:'center', minWidth:200}}>
       <View style={styles.shadowBox}>        
         <Text style={styles.title}>Нове завдання:</Text>
-        <Text>Час зустрічі:</Text>
-        <DatePicker startDate={'2022-02-24T13:30:00'} callBack={()=>setDataCreate}/>
-        <DatePicker startDate={'1999-02-20T12:30:00'} callBack={()=>setDataExecute}/>
+        <Text>Час зустрічі:</Text>        
+        <DatePicker startDate={dataExecute} callBack={()=>setDataExecute}/>        
         <Text>Задача:</Text>
         <UselessTextInput
             multiline
@@ -36,6 +35,15 @@ const NewTask = function _ ({store}:any) {
             onChangeText={(text:string) => setData(text)}
             value={data}
             style={styles.inputMultiline}
+        />
+        <Text>Сума винагороди:</Text>
+        <TextInput 
+          value={budget.replace(/[^0-9]/g, '')}
+          onChangeText={setBudget}
+          maxLength={6} 
+          placeholder="Грн."
+          placeholderTextColor="#aaa"
+          style={[styles.input]}
         />
         <View style={{flexDirection:'row', justifyContent:'flex-end'}}>
             <TouchableOpacity
@@ -45,7 +53,13 @@ const NewTask = function _ ({store}:any) {
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.button}
-                onPress={()=>createTask()}>
+                onPress={
+                  ()=>{ 
+                    store.displayName>''?                    
+                    data.length<27 ? alert('Замалий текст опису задачі'):createTask():
+                    alert('Потрібно ввести ваше Прізвище та ім`я у данних про себе (четверта вкладка)')
+                  } 
+                }>
                 <Text style={styles.buttonText}>Створити</Text>
             </TouchableOpacity>      
         </View>
@@ -84,9 +98,16 @@ const styles = StyleSheet.create({
       alignSelf:'center'
     },
     inputMultiline: {
+      margin:10,
       padding: 10,     
       borderWidth:1,
-      margin:10
+    },
+    input:{
+      padding:10,
+      margin:10,
+      borderWidth:1,      
+      textAlign:'center',
+      backgroundColor:'#fff'
     },
     buttonText:{
       alignSelf:'center',
