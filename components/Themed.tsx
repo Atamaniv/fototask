@@ -8,6 +8,7 @@ import { Text as DefaultText, View as DefaultView } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 
+
 export function useThemeColor(
   props: { light?: string; dark?: string },
   colorName: keyof typeof Colors.light & keyof typeof Colors.dark
@@ -30,6 +31,7 @@ type ThemeProps = {
 export type TextProps = ThemeProps & DefaultText['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
 
+
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
@@ -39,14 +41,31 @@ export function Text(props: TextProps) {
 
 export function View(props: ViewProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
-  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
+  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'backgroundItem');
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
 }
 
-export function Button(props: ViewProps) {
+export function MainView(props: ViewProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
+}
+export function ShadowBoxView(props: ViewProps) {
+  const { style, lightColor, darkColor, ...otherProps } = props;
+  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'backgroundShadowBox');
+  return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
+}
+export function HeadBoxView(props: ViewProps) {
+  const { style, lightColor, darkColor, ...otherProps } = props;
+  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'backgroundHead');
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+  return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
+}
+export function HeadBoxViewUnder(props: ViewProps) {
+  const { style, lightColor, darkColor, ...otherProps } = props;
+  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'backgroundHeadUnder');
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+  return <DefaultView style={[{ backgroundColor },  style]} {...otherProps} />;
 }
