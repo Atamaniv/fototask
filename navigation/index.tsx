@@ -18,11 +18,14 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import TabScreenATasks from '../screens/TabScreenATasks';
 import TabScreenCMyTasks from '../screens/TabScreenCMyTasks';
 import TabScreenDUser from '../screens/TabScreenDUser';
+import ConfirmEmail from '../screens/ConfirmEmail';
 import TabScreenBNewTask from '../screens/TabScreenBNewTask';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+import { inject, observer } from 'mobx-react';
+
+export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {  
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
@@ -31,6 +34,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
     </NavigationContainer>
   );
 }
+
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -42,10 +46,13 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />      
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="Modal" component={ModalScreen} />       
+      </Stack.Group>
+      <Stack.Group screenOptions={{ presentation: 'fullScreenModal' }}>
+        <Stack.Screen name="Confirm" component={ConfirmEmail} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -87,7 +94,7 @@ function BottomTabNavigator() {
               <FontAwesome
                 name="info-circle"
                 size={25}
-                color={Colors[colorScheme].text}
+                color='#f00'//{Colors[colorScheme].text}
                 style={{ marginRight: 15 }}
               />
             </Pressable>
@@ -104,7 +111,7 @@ function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="TabFree"
+        name="TabThree"
         component={TabScreenCMyTasks}
         options={{
           headerShown:false,

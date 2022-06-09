@@ -3,7 +3,8 @@ import { getAuth,
   signOut, 
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile
+  updateProfile,
+  sendSignInLinkToEmail
  } from "firebase/auth";
 import { collection, addDoc, setDoc, doc, query, getDocs, getDoc, updateDoc, orderBy, where } from 'firebase/firestore';
 import firebaseApp from '../common/firebaseApp';
@@ -35,9 +36,9 @@ export default class myStore {
     
   isAuthorised = () =>{
     if (this.email==='')
-     return true
-    else
      return false
+    else
+     return true
   }
 
   setUser=(user:any)=>{
@@ -79,7 +80,7 @@ export default class myStore {
     .catch((e) => { console.error(e) });  
   }
 
-  async updateProfile(user:any){   
+  async updateProfile(user:any){
     updateProfile(user, {
       displayName: this.displayName,
       //photoURL: "https://example.com/jane-q-user/profile.jpg"
@@ -104,7 +105,7 @@ export default class myStore {
         joinedUsers: 0,
         executor:'0'
       });
-      console.log("Document written with ID: ", docRef.id);
+      //console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -148,6 +149,39 @@ export default class myStore {
     updateDoc(docRefPrev, {
       joinedUsers: value+1
     })
-    console.log("Cached document data:", docSnap.data());
+    //console.log("Cached document data:", docSnap.data());
+  }
+
+  actionCodeSettings = {
+    // URL you want to redirect back to. The domain (www.example.com) for this
+    // URL must be in the authorized domains list in the Firebase Console.
+    url: 'https://localhost:19006/finishSignUp?cartId=1234',
+    // This must be true.
+    handleCodeInApp: true,
+    // iOS: {
+    //   bundleId: 'com.example.ios'
+    // },
+    // android: {
+    //   packageName: 'com.example.android',
+    //   installApp: true,
+    //   minimumVersion: '12'
+    // },
+    dynamicLinkDomain: 'example.page.link'
+  };
+
+  async sendMail(){
+    sendSignInLinkToEmail(auth, this.email, this.actionCodeSettings)
+    .then(() => {
+      // The link was successfully sent. Inform the user.
+      // Save the email locally so you don't need to ask the user for it again
+      // if they open the link on the same device.
+      window.localStorage.setItem('emailForSignIn', this.email);
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ...
+    });
   }
 }

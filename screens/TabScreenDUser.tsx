@@ -159,10 +159,8 @@ const styles = StyleSheet.create({
     width:150,
     height:150,
     borderRadius:75,
-    //borderColor:colorAvatar,
     borderWidth:10,
-    backgroundColor: 'rgba(0, 0, 0, 0.0)',
-    
+    backgroundColor: 'rgba(0, 0, 0, 0.0)',    
   },
   saveButtonText:{
     alignSelf:'center',

@@ -71,7 +71,7 @@ const TabTwoScreen =  function ({store} :any) {
         <Text style={{ color: '#fff', fontSize: 40, paddingTop: 25 }}>MY TASK</Text>
       </ThemeHeadBoxView>
       <ThemeHeadBoxViewUnder style={{height: 50, width: '100%'}}>
-        <Text style={{ color: '#013d59', fontSize: 30, paddingTop: 5, alignSelf:'center' }}>LVIV</Text>
+        <Text style={{ color: '#fff', fontSize: 30, paddingTop: 5, alignSelf:'center' }}>LVIV</Text>
       </ThemeHeadBoxViewUnder>
       { !(store.user===null || store.user==='')  &&
         <>

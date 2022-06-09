@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { inject, observer } from 'mobx-react';
-import { View, Text } from './Themed';
+import { View, Text, ShadowBoxView as ThemeShadowBoxView } from './Themed';
 import { TouchableOpacity, TextInput, StyleSheet } from 'react-native'
 import DatePicker from '../components/DatePeacker'
 
@@ -23,8 +23,8 @@ const NewTask = function ({store}:any) {
         store.setShowNewTask();
     }
     return (
-    <View style={{backgroundColor:'none', width:'100%', alignSelf:'center', minWidth:200}}>
-      <View style={styles.shadowBox}>        
+    <ThemeShadowBoxView style={{backgroundColor:'none', width:'100%', alignSelf:'center', minWidth:200}}>
+      <ThemeShadowBoxView style={styles.shadowBox}>        
         <Text style={styles.title}>Нове завдання:</Text>
         <Text>Час зустрічі:</Text>        
         <DatePicker startDate={dataExecute} callBack={()=>setDataExecute}/>        
@@ -45,7 +45,7 @@ const NewTask = function ({store}:any) {
           placeholderTextColor="#aaa"
           style={[styles.input]}
         />
-        <View style={{flexDirection:'row', justifyContent:'flex-end'}}>
+        <ThemeShadowBoxView style={{flexDirection:'row', justifyContent:'flex-end'}}>
             <TouchableOpacity
                 style={styles.button}
                 onPress={()=>store.setShowNewTask()}>
@@ -62,9 +62,9 @@ const NewTask = function ({store}:any) {
                 }>
                 <Text style={styles.buttonText}>Створити</Text>
             </TouchableOpacity>      
-        </View>
-      </View>
-    </View>
+        </ThemeShadowBoxView>
+      </ThemeShadowBoxView>
+    </ThemeShadowBoxView>
     )
 }
 
@@ -101,23 +101,32 @@ const styles = StyleSheet.create({
       margin:10,
       padding: 10,     
       borderWidth:1,
+      backgroundColor:'#eee',      
+      fontSize:18,      
     },
     input:{
       padding:10,
       margin:10,
       borderWidth:1,      
       textAlign:'center',
-      backgroundColor:'#fff'
+      backgroundColor:'#eee',
+      fontSize:18, 
+      fontWeight:'bold'
     },
     buttonText:{
       alignSelf:'center',
-      margin:10,
-      color:'#fff'
+      margin:10,      
+      fontWeight:'bold',
+      fontSize:18,
+      color:'white',
     },
     button: {
       borderWidth:1,
       margin:10,
-      backgroundColor:'#024c5c'
+      backgroundColor:'#024c5c',
+      fontWeight:'bold',
+      fontSize:18,
+      color:'white',
     }
   });
   

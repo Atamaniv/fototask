@@ -13,6 +13,7 @@ export default {
     backgroundHead:'#013d59',
     backgroundHeadUnder:'#fff',
     backgroundButton:'#013d59',
+    button:'#F00'
   },
   dark: {
     background: '#2d2d2d',
@@ -25,5 +26,6 @@ export default {
     backgroundHead:'#520303',
     backgroundHeadUnder:'#000',
     backgroundButton:'#013d59',
+    button:'#0F0'
   },
 };

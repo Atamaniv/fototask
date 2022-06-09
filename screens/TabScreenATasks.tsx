@@ -9,7 +9,6 @@ import { RootTabScreenProps } from '../types';
 import { db } from '../common/firebaseApp';
 import { onSnapshot, collection, query, orderBy, where } from 'firebase/firestore/';
 import {format} from '../components/utilit'
-
 import { Text, 
   MainView as ThemeMainView, 
   ShadowBoxView as ThemeShadowBoxView,
@@ -18,7 +17,8 @@ import { Text,
 } from '../components/Themed';
 
 const auth = getAuth(firebaseApp);
-const TabOneScreen = function ({ store }: any, { navigation }: RootTabScreenProps<'TabOne'>) {
+const TabOneScreen = function ( { navigation, store }: {navigation:any, store:any}) {  
+
   useEffect(() => {
     store.setUser(auth.currentUser)
   })
@@ -43,7 +43,7 @@ const TabOneScreen = function ({ store }: any, { navigation }: RootTabScreenProp
         joinedUsers: doc.data().joinedUsers,
         userUid: doc.data().userUid,
       })))
-      console.log(DATA)
+      //console.log(DATA)
     })
     return () => unsubscribe();
   }, [store.uid]);
@@ -86,8 +86,7 @@ const TabOneScreen = function ({ store }: any, { navigation }: RootTabScreenProp
     </ThemeShadowBoxView>
   );
 
-  const renderItem = ({ item }: any) => {
-    
+  const renderItem = ({ item }: any) => {    
     return (
       <Item
         key={item.id.toString()}
@@ -95,15 +94,23 @@ const TabOneScreen = function ({ store }: any, { navigation }: RootTabScreenProp
         onPress={() => setSelectedId(item.id)}/>
     );
   };
-
   return (
     <ThemeMainView style={styles.container}>
-      <ThemeHeadBoxView style={{ height: 100, width: '100%', alignItems: 'center' }}>
+       <ThemeHeadBoxView style={{ height: 100, width: '100%', alignItems: 'center' }}>
         <Text style={{ color: '#fff', fontSize: 40, paddingTop: 25 }}>PHOTOTASKS</Text>
       </ThemeHeadBoxView>
       <ThemeHeadBoxViewUnder style={{height: 50, width: '100%'}}>
         <Text style={{ fontSize: 30, paddingTop: 5, alignSelf:'center' }}>LVIV</Text>
       </ThemeHeadBoxViewUnder>
+      {
+        (!store.isAuthorised()) &&
+        <TouchableOpacity
+        style={[styles.button, {margin:20, padding:10}]}
+        onPress={() => navigation.navigate( 'Root', { screen: 'TabFour',   initial: false })}>
+        <Text style={styles.buttonText}>Потрібна авторизіція</Text>
+       </TouchableOpacity> 
+      }
+      
       <FlatList
         style={{ width: '100%', margin: 5, padding: 5}}
         data={DATA}
@@ -115,7 +122,9 @@ const TabOneScreen = function ({ store }: any, { navigation }: RootTabScreenProp
   );
 }
 
-export default inject(({ store }) => ({ store }))(observer(TabOneScreen))
+export default inject(({store, navigate}:{store:any, navigate:any}) => ({store, navigate}))(observer(TabOneScreen))
+
+
 
 const styles = StyleSheet.create({
   container: {

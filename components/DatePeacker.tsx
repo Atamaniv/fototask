@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Text } from './Themed';
+import { Text, ShadowBoxView as ThemeShadowBoxView } from './Themed';
 import { Modal, View, TouchableOpacity } from 'react-native';
 import R from '../constants/Layout';
 import DatePeackerMicro from './DatePeackerMicro';
@@ -34,9 +34,8 @@ const DatePeacker = function ({startDate, callBack}:any){
         transparent={true}
         visible={modal}
       >
-        {/* Modal window */}
         <View style={styles.containerModal2}>
-          <View style={styles.modalView2}>
+          <ThemeShadowBoxView style={styles.modalView2}>
             <View style={styles.row}>
               <Text style={styles.pseudoText}>Дата:</Text>             
               <DatePeackerMicro 
@@ -45,12 +44,12 @@ const DatePeacker = function ({startDate, callBack}:any){
                 callBack={(val:any)=>{setDay(val);virifyDay(Number(year),Number(month),Number(val))}} 
                 days={daysInMonth} 
                 error={error}/>
-                <Text style={{margin:10,marginTop:10}}>.</Text>              
+                <Text style={styles.buttonText}>.</Text>              
               <DatePeackerMicro 
                 title={'Місяць'} 
                 def={month} 
                 callBack={(val:any)=>{setMonth(val);setDaysOfMonth(year,val); virifyDay(Number(year),val,Number(day))}}/>
-                <Text style={{margin:10,marginTop:10}}>.</Text>             
+                <Text style={styles.buttonText}>.</Text>             
               <DatePeackerMicro 
                 title={'Рік'} 
                 def={year} 
@@ -77,7 +76,7 @@ const DatePeacker = function ({startDate, callBack}:any){
               }>
               <Text style={[styles.buttonText,{width:100}]}>ОК</Text>
             </TouchableOpacity>
-          </View>
+          </ThemeShadowBoxView>
         </View>
       </Modal>
       <TouchableOpacity
@@ -121,12 +120,11 @@ const styles = StyleSheet.create({
     flexDirection:'row',    
     alignSelf:'center',
     maxWidth:R.window.height/2,
-    width:'80%'
+    width:'80%',    
   },
   modalView2: {
     minWidth:280,
-    width:'60%',
-    backgroundColor:'#fff',
+    width:'60%',    
     borderRadius: 5,
     borderWidth: 1,
     padding:10,
@@ -136,25 +134,34 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 18,
     shadowOffset: { width: 0, height: 4 },    
-    elevation: 6
+    elevation: 6,
+    backgroundColor:'#2d2d2d',
   },
 
   buttonText:{
     alignSelf:'center',
     margin:10,
-    color:'#fff',    
+    fontWeight:'bold',
+    fontSize:18,
+    color:'white',
   },
   button: {
     borderWidth:1,
     margin:10,
     backgroundColor:'#024c5c',
-    textAlign:'center'
+    textAlign:'center',
+    fontWeight:'bold',
+    fontSize:18,
+    color:'white',
   },  
   buttonError: {
     borderWidth:1,
     margin:10,
     backgroundColor:'#f00',
-    textAlign:'center'
+    textAlign:'center',
+    fontWeight:'bold',
+    fontSize:18,
+    color:'white',
   },
   row: {
     flexDirection:'row',
@@ -162,14 +169,22 @@ const styles = StyleSheet.create({
   },
   pseudoText: {
     margin:10,
-    color:'#000',
     width:50,
+    fontWeight:'bold',
+    fontSize:18,
+    color:'white',
   },
   pseudoButton: {    
     padding:10,    
     borderWidth:1,
     borderRadius:3,
     backgroundColor:'#024c5c',
-    color:'#fff'
+  },
+  textButton:{
+    fontWeight:'bold',
+    fontSize:18,
+    color:'white',
+    margin:10,
+    marginTop:10
   }
 })

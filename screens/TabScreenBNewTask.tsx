@@ -68,7 +68,7 @@ const TabFourScreen = function ({store}:any) {
   }, [store.uid]);
   
   const runTask=()=>{
-    store.isAuthorised() ? alert('Нообхіна авторизація'):
+    !store.isAuthorised() ? alert('Нообхіна авторизація'):
     store.displayName>''? store.setShowNewTask():alert('Потрібно ввести ваше Прізвище та ім`я у данних про себе (четверта вкладка)')
   }
   const renderItem = ({ item }: any) => {
@@ -84,7 +84,7 @@ const TabFourScreen = function ({store}:any) {
   return (
     <ThemeMainView style={styles.container}>
       <ThemeHeadBoxView style={{ height: 100, width: '100%', alignItems: 'center' }}>
-        <Text style={{ fontSize: 40, paddingTop: 25 }}>NEW TASK</Text>
+        <Text style={{ color: '#fff', fontSize: 40, paddingTop: 25 }}>NEW TASK</Text>
       </ThemeHeadBoxView>
       <ThemeHeadBoxViewUnder style={{height: 50, width: '100%'}}>
         <Text style={{ fontSize: 30, paddingTop: 5, alignSelf:'center' }}>LVIV</Text>

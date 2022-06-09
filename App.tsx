@@ -47,8 +47,7 @@ function App() {
           <NativeBaseProvider>
             <View style={{backgroundColor:'#f00', height:'99.89%', alignContent:'center', flexDirection:'row', justifyContent:'center'}}>  
               <SafeAreaProvider style={{maxWidth:R.window.width<500?'100%':R.window.height/2, minWidth:400}}>
-                <Navigation colorScheme={colorScheme} />
-                <StatusBar />
+                <Navigation colorScheme={colorScheme}/>                
               </SafeAreaProvider>            
             </View>
           </NativeBaseProvider>
